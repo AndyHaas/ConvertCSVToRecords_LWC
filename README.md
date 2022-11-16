@@ -35,10 +35,12 @@ Name, Description, Active__c
 
 ## Implementations
 Implementing this component can be as simple as creating records right after parsing like so:
+
 ![Screenshot 2022-11-15 at 22 07 45](https://user-images.githubusercontent.com/22582720/202085694-03072343-2d7a-4673-88c1-0e809a33a1e7.png)
 
 
 Or you can be more complex with loops and filters as the output is an SObject allowing manipulation of the imported data.
+
 ![Screenshot 2022-11-15 at 22 10 42](https://user-images.githubusercontent.com/22582720/202085716-842bc6be-76d2-42c5-82d7-6caea9983595.png)
 
 
