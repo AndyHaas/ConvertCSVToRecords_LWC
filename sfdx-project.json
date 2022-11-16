@@ -6,7 +6,7 @@
     }
   ],
   "name": "ConvertCSVToRecords_LWC",
-  "namespace": "",
+  "namespace": "mc",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "55.0"
 }
