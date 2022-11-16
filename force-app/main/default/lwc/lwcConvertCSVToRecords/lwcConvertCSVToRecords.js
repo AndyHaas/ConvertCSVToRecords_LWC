@@ -105,39 +105,51 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 									.then(fieldList => {
 											console.log('fieldList: ' + typeof fieldList);
 
+											// Set new columnHeader array
+											let newColumnHeaders = [];
 											// Compare the column headers to the fields for the selected object
 											// If the column header is not a match add __c to the end and recheck the fields
 											// If the column header is still not a match, remove the column header from the list
 											for (let i = 0; i < this.columnHeaders.length; i++) {
-													let columnHeader = this.columnHeaders[i];
-													console.log('columnHeader: ' + columnHeader);
+												let columnHeader = this.columnHeaders[i];
 
-													if (!fieldList.includes(columnHeader)) {
-															columnHeader = columnHeader + '__c';
-															console.log('custom field: ' + columnHeader);
+												// Trim the column header
+												columnHeader = columnHeader.trim();
 
-															if (!fieldList.includes(columnHeader)) {
-																	this.columnHeaders.splice(i, 1);
-																	console.log('removed field: ' + columnHeader);
-															}
-													}
+												// Replace spaces with underscores
+												columnHeader = columnHeader.replace(' ', '_');
+												console.log('columnHeader: ' + columnHeader);
+
+												if (fieldList.includes(columnHeader)) {
+													console.log('standard field: ' + columnHeader);
+													newColumnHeaders.push({"newField":columnHeader, "oldField":columnHeader});
+												} else if (fieldList.includes(columnHeader + '__c')) {
+													console.log('custom field: ' + columnHeader + '__c');
+													newColumnHeaders.push({"newField":columnHeader + '__c', "oldField":columnHeader});
+												} else {
+													console.log('removed field: ' + columnHeader);
+												}
 											}
 
-											console.log('columnHeadersEdit: ' + JSON.stringify(this.columnHeaders));
+											console.log('newColumnHeaders: ' + JSON.stringify(newColumnHeaders));
 
 											// New array to store the rows of data
 											let newRows = [];
-											// Go through the parsedResults object and set key based on the fieldList object
+											// Go through the parsedResults object and set key based on the fieldList object match on oldField and replace the oldField with the newField
 											// If the key is not in the columnHeaders object, remove the key from the object
-											for (let i = 0; i < parsedResults.data.length; i++) {
-													let row = parsedResults.data[i];
-
-													for (let key in row) {
-															if (!this.columnHeaders.includes(key)) {
-																	delete row[key];
-															}
+											for(let i = 0; i < parsedResults.data.length; i++){
+												let row = parsedResults.data[i];
+												let newRow = {};
+												for(let key in row){
+													let newKey = key;
+													for(let j = 0; j < newColumnHeaders.length; j++){
+														if(key === newColumnHeaders[j].oldField){
+															newKey = newColumnHeaders[j].newField;
+														}
 													}
-													newRows.push(row);
+													newRow[newKey] = row[key];
+												}
+												newRows.push(newRow);
 											}
 
 											// Set the rows of data
