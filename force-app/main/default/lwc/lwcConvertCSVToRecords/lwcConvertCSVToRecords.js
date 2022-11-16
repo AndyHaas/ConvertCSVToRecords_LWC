@@ -116,16 +116,31 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 												// Trim the column header
 												columnHeader = columnHeader.trim();
 
-												// Replace spaces with underscores
-												columnHeader = columnHeader.replace(' ', '_');
 												console.log('columnHeader: ' + columnHeader);
 
-												if (fieldList.includes(columnHeader)) {
+												// For standard fields we need to remove the space inbetween the words
+												// For example: Account Name becomes AccountName
+												// Create standardField variable to store the new value
+												let standardField;
+												if (columnHeader.includes(' ')) {
+													standardField = columnHeader.replace(' ', '');
+												} else {
+													standardField = columnHeader;
+												}
+												if (fieldList.includes(standardField)) {
 													console.log('standard field: ' + columnHeader);
 													newColumnHeaders.push({"newField":columnHeader, "oldField":columnHeader});
-												} else if (fieldList.includes(columnHeader + '__c')) {
-													console.log('custom field: ' + columnHeader + '__c');
-													newColumnHeaders.push({"newField":columnHeader + '__c', "oldField":columnHeader});
+												} 
+												
+												// Create customField variable to store the new value
+												let customField;
+												// Replace spaces with underscores
+												customField = columnHeader.replace(' ', '_');
+												// Add __c to the end of the field
+												customField = customField + '__c';
+												if (fieldList.includes(customField)) {
+													console.log('custom field: ' + customField);
+													newColumnHeaders.push({"newField":customField, "oldField":columnHeader});
 												} else {
 													console.log('removed field: ' + columnHeader);
 												}
