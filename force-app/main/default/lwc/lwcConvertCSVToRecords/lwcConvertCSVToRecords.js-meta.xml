@@ -23,6 +23,7 @@
 			<property name="delimitersToGuess" label="Delimiters To Guess" type="String[]" description="An array of delimiters to guess from if the delimiter option is not set." default=""/>
 
 			<!-- Flow Inputs -->
+			<property name="inputLabel" label="Input Label" type="String" description="The label for the input field" default="Upload CSV"/>
 			<property name="autoNavigateNext" type="Boolean" label="Auto Navigate Next" description="If true, the flow will automatically navigate to the next screen after the component has been initialized." required="true" default="false"/>
 			<property name="objectName" label="Object Name" type="String" required="true" default="Account" role="inputOnly"/>
 			<propertyType name="T" extends="SObject" label="Output Object" description="Generic sObject data type used for output sObject properties" />         

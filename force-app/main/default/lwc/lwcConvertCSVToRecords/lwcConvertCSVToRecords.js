@@ -26,6 +26,8 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 		@api transform = undefined;
 		@api delimitersToGuess = [];
 
+		// Get Label for Input file
+		@api inputLabel = 'Upload CSV';
 
 		// Get flow attributes
 		@api availableActions = [];
