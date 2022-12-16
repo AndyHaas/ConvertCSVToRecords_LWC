@@ -19,14 +19,14 @@ export default class LwcConvertCSVToRecords_CPE extends LightningElement {
     _typeMappings = [];
 
     @track inputValues = {
-        objectName: {value: null, valueDataType: null, isCollection: false, label: 'Lookup which Object?', required: true, errorMessage: 'Please select an object'},
+        objectName: {value: null, valueDataType: null, isCollection: false, label: 'Input Object?', required: true, errorMessage: 'Please select an object'},
         inputLabel: {value: 'Upload CSV', valueDataType: null, isCollection: false, label: 'File Import Label', required: false, fieldHelpText: 'The label for the file input field'},
         autoNavigateNext: {value: false, valueDataType: null, isCollection: false, label: 'Auto Navigate Next', required: true, fieldHelpText: 'If true, the flow will automatically navigate to the next screen after the component has been initialized.'},
         delimiter: {value: ',', valueDataType: null, isCollection: false, label: 'Delimiter', required: false, fieldHelpText: 'The delimiting character. Leave blank to auto-detect from a list of most common delimiters, or any values passed in through delimitersToGuess'},
         newLine: {value: null, valueDataType: null, isCollection: false, label: 'New Line', required: false, fieldHelpText: 'The newline sequence. Leave blank to auto-detect. Must be one of \r, \n, or \r\n.'},
         quoteChar: {value: '&quot;', valueDataType: null, isCollection: false, label: 'Quote Character', required: false, fieldHelpText: 'The character used to quote fields. The quoting of all fields is not mandatory. Any field which is not quoted will correctly read.'},
         escapeChar: {value: '&quot;', valueDataType: null, isCollection: false, label: 'Escape Character', required: false, fieldHelpText: 'The character used to escape the quote character within a field. If not set, this option will default to the value of quoteChar'},
-        transformHeader: {value: '', valueDataType: null, isCollection: false, label: 'Transform Header', required: false, fieldHelpText: 'A function to apply on each header. Requires header to be true. The function receives the header as its first argument and the index as second.'},
+        transformHeader: {value: '', valueDataType: null, isCollection: false, label: 'Transform Header', required: false, fieldHelpText: 'A function to apply on each header.  The function receives the header as its first argument and the index as second.'},
         dynamicTyping: {value: false, valueDataType: null, isCollection: false, label: 'Dynamic Typing', required: false, fieldHelpText: 'If true, numeric and boolean data will be converted to their type instead of remaining strings'},
         encoding: {value: 'UTF-8', valueDataType: null, isCollection: false, label: 'Encoding', required: false, fieldHelpText: 'The encoding to use when opening local files. If specified, it must be a value supported by the FileReader API'},
         comments: {value: false, valueDataType: null, isCollection: false, label: 'Comments', required: false, fieldHelpText: 'A string that indicates a comment (for example, # or //). When Papa encounters a line starting with this string, it will skip the line.'},
