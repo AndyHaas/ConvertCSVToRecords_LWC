@@ -219,7 +219,7 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 		this.skipEmptyLines = true;
 		
 		if(event.detail.files.length > 0){
-				this.isLoading = true;
+				this._isLoading = true;
 				const file = event.detail.files[0];
 				this.loading = true;
 				Papa.parse(file, {
@@ -388,7 +388,7 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 										this._outputValue = newRows;
 										this._isLoading = false;
 										// Set outputValue to the results
-										this.dispatchFlowValueChangeEvent('outputValue', results);
+										this.handleValueChange('outputValue', newRows);
 
 										console.log('autoNavigateNext: ' + this._autoNavigateNext);
 										// If the autoNavigateNext attribute is true, navigate to the next screen
@@ -407,7 +407,7 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 						},
 						error: (error) => {
 								console.error(error);
-								this._errorMessage = error;
+								this._errorMessage = 'Parser Error: ' + error;
 								this._isError = true;
 								this._isLoading = false;
 						}
@@ -427,18 +427,8 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 		}
 	}
 
-	dispatchFlowValueChangeEvent(id, newValue, dataType = DATA_TYPE.STRING) {
-		console.log('in dispatchFlowValueChangeEvent: ' + id, newValue, dataType);
-		const valueChangedEvent = new CustomEvent(FLOW_EVENT_TYPE.CHANGE, {
-			bubbles: true,
-			cancelable: false,
-			composed: true,
-			detail: {
-				name: id,
-				newValue: newValue ? newValue : null,
-				newValueDataType: dataType
-			}
-		});
-		this.dispatchEvent(valueChangedEvent);
-	}
+    handleValueChange(apiName, value) {
+        const attributeChangeEvent = new FlowAttributeChangeEvent(apiName, value);
+        this.dispatchEvent(attributeChangeEvent);
+    }
 }
