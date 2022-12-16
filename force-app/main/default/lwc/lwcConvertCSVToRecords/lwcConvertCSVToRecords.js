@@ -326,8 +326,14 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 											console.log('newColumnHeaders: ' + JSON.stringify(newColumnHeaders));
 											console.log('fieldsToRemove: ' + JSON.stringify(fieldsToRemove));
 
+											// If fieldsToRemove is not empty then error out
+											if (fieldsToRemove.length > 0) {
+												console.log('fieldsToRemove: ' + JSON.stringify(fieldsToRemove));
+												this._errorMessage = 'The following fields are not valid: ' + fieldsToRemove.join(', ') + '. Please remove them from the CSV file and try again.';
+												this._isError = true;
+											}
+
 											// Check if there are duplicate headers
-											// If there is a duplicate header then error out
 											let duplicateHeaders = [];
 											for (let i = 0; i < newColumnHeaders.length; i++) {
 												let columnHeader = newColumnHeaders[i].newField;
@@ -335,9 +341,11 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 													duplicateHeaders.push(columnHeader);
 												}
 											}
+
+											// If there is a duplicate header then error out
 											if (duplicateHeaders.length > 0) {
 												console.log('duplicateHeaders: ' + JSON.stringify(duplicateHeaders));
-												this._errorMessage = 'Duplicate headers found: ' + duplicateHeaders.join(', ');
+												this._errorMessage = 'Duplicate headers found: ' + duplicateHeaders.join(', ') + '. Please remove the duplicate headers and try again.';
 												this._isError = true;
 												this._isLoading = false;
 												return;
