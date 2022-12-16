@@ -8,7 +8,7 @@
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
-		<targetConfig targets="lightning__FlowScreen">
+		<targetConfig targets="lightning__FlowScreen" configurationEditor="c-lwc-Convert-C-S-V-To-Records-C-P-E">
 			<!-- PapaParse Inputs -->
 			<property name="delimiter" label="Delimiter" type="String" description="The delimiting character. Leave blank to auto-detect from a list of most common delimiters, or any values passed in through delimitersToGuess" default=","/>
 			<property name="newline" label="Newline" type="String" description="The newline sequence. Leave blank to auto-detect. Must be one of \r, \n, or \r\n." default=""/>
@@ -21,9 +21,9 @@
 			<property name="fastMode" label="Fast Mode" type="Boolean" description='Fast mode speeds up parsing significantly for large inputs. However, it only works when the input has no quoted fields. Fast mode will automatically be enabled if no " characters appear in the input.' default="false"/>
 			<property name="transform" label="Transform" type="String" description="A function to apply on each value. The function receives the value as its first argument and the column number or header name when enabled as its second argument. The return value of the function will replace the value it received. The transform function is applied before dynamicTyping." default=""/>
 			<property name="delimitersToGuess" label="Delimiters To Guess" type="String[]" description="An array of delimiters to guess from if the delimiter option is not set." default=""/>
-
+			
 			<!-- Flow Inputs -->
-			<property name="inputLabel" label="Input Label" type="String" description="The label for the input field" default="Upload CSV"/>
+			<property name="inputLabel" label="Label" type="String" description="The label for the file input field" default="Upload CSV"/>
 			<property name="autoNavigateNext" type="Boolean" label="Auto Navigate Next" description="If true, the flow will automatically navigate to the next screen after the component has been initialized." required="true" default="false"/>
 			<property name="objectName" label="Object Name" type="String" required="true" default="Account" role="inputOnly"/>
 			
