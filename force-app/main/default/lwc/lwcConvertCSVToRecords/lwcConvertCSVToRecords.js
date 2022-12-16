@@ -1,7 +1,8 @@
 import { LightningElement, track, api } from 'lwc';
 import {
 	FlowNavigationFinishEvent,
-	FlowNavigationNextEvent
+	FlowNavigationNextEvent,
+	FlowAttributeChangeEvent
 } from "lightning/flowSupport";
 import getObjectFields from '@salesforce/apex/LwcConvertCSVToRecordsHelper.getObjectFields';
 import { loadScript } from 'lightning/platformResourceLoader';
@@ -402,7 +403,7 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 									});
 
 									// Set outputValue to the results
-									this.outputValue = results;
+									this.handleEventChanges('outputValue', results);
 							},
 							error: (error) => {
 									console.error(error);
@@ -425,4 +426,9 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 				this.dispatchEvent(navigateNextEvent);
 			}
 		}
+
+		handleEventChanges(apiName, value) {
+            const attributeChangeEvent = new FlowAttributeChangeEvent(apiName, value);
+            this.dispatchEvent(attributeChangeEvent);
+        }
 }
