@@ -387,6 +387,8 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 										console.log('newRows: ' + JSON.stringify(newRows));
 										this._outputValue = newRows;
 										this._isLoading = false;
+										// Set outputValue to the results
+										this.dispatchFlowValueChangeEvent('outputValue', results);
 
 										console.log('autoNavigateNext: ' + this._autoNavigateNext);
 										// If the autoNavigateNext attribute is true, navigate to the next screen
@@ -402,8 +404,6 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 										this._isLoading = false;
 								});
 
-								// Set outputValue to the results
-								this.dispatchFlowValueChangeEvent('outputValue', results);
 						},
 						error: (error) => {
 								console.error(error);
