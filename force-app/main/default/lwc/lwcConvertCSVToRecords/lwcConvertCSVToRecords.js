@@ -326,7 +326,6 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 											console.log('newColumnHeaders: ' + JSON.stringify(newColumnHeaders));
 											console.log('fieldsToRemove: ' + JSON.stringify(fieldsToRemove));
 
-
 											// Check if there are duplicate headers
 											// If there is a duplicate header then error out
 											let duplicateHeaders = [];
@@ -389,6 +388,9 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 									})
 									.catch(error => {
 											console.log('error: ' + JSON.stringify(error));
+											this._errorMessage = JSON.stringify(error);
+											this._isError = true;
+											this._isLoading = false;
 									});
 
 									// Set outputValue to the results
