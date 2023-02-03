@@ -382,6 +382,29 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 											}
 											newRows.push(newRow);
 										}
+
+										// Go through the newRows and remove any rows that are empty
+										newRows = newRows.filter(x => Object.keys(x).length > 0);
+
+										// Go through the newRows and if any are date fields, format them to the correct format yyyy-MM-dd
+										for (let i = 0; i < newRows.length; i++) {
+											let row = newRows[i];
+											for (let key in row) {
+												if (row.hasOwnProperty(key)) {
+													let value = row[key];
+													if (dateFields.includes(key)) {
+														console.log('dateField: ' + key + ' value: ' + value);
+														let date = new Date(value);
+														let year = date.getFullYear();
+														let month = date.getMonth() + 1;
+														let day = date.getDate();
+														let formattedDate = year + '-' + month + '-' + day;
+														console.log('formattedDate: ' + formattedDate);
+														row[key] = formattedDate;
+													}
+												}
+											}
+										}
 										
 										// Set the rows of data
 										console.log('newRows: ' + JSON.stringify(newRows));
