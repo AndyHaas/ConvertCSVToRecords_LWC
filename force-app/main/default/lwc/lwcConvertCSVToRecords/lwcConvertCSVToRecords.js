@@ -484,7 +484,7 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 														} else {
 															formattedValue = parseFloat(formattedValue).toFixed(2);
 															console.log('is a number: ' + formattedValue);
-															newRow[newKey] = formattedValue;
+															newRow[newKey] = parseFloat(formattedValue);
 														}
 													} else if (fieldType === 'DOUBLE' || fieldType === 'INT' || fieldType === 'LONG' || fieldType === 'PERCENT') {
 														// Remove the % sign from the value
@@ -497,11 +497,16 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 															newRow[newKey] = formattedValue;
 														} else {
 															formattedValue = parseFloat(formattedValue).toFixed(0);
-															newRow[newKey] = formattedValue;
+															newRow[newKey] = parseFloat(formattedValue);
 														}
 													} else {
 														// Remove character returns from the value
 														let formattedValue = newValue.replace(/(\r\n|\n|\r)/gm, '');
+														// Trim the value
+														formattedValue = formattedValue.trim();
+														// Remove extra spaces from the value
+														// 1905 CARIBOO                        HWY    N to 1905 CARIBOO HWY N
+														formattedValue = formattedValue.replace(/\s\s+/g, ' ');
 														newRow[newKey] = formattedValue;
 													}
 												}
@@ -519,12 +524,14 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 
 									// Seralize the data with the objectName
 									let serializedData = {};
-									
+									serializedData[this.objectName] = newRows;
+									console.log('serializedData: ' + JSON.stringify(serializedData));
 
-									this._outputValue = newRows;
+									// Set the outputValue to the serialized data
+									this._outputValue = serializedData;
 									this._isLoading = false;
 									// Set outputValue to the results
-									this.handleValueChange('outputValue', newRows);
+									this.handleValueChange('outputValue', serializedData);
 
 									console.log('autoNavigateNext: ' + this._autoNavigateNext);
 									// If the autoNavigateNext attribute is true, navigate to the next screen
