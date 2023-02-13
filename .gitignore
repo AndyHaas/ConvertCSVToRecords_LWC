@@ -1,0 +1,8 @@
+# Ignore all files in the .sfdx folder
+.sfdx/*
+
+# Ignore all files in the .sf folder
+.sf/*
+
+# Ingore all the files in the config folder
+config/*

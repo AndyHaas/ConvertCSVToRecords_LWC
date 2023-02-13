@@ -17,6 +17,41 @@ export default class LwcConvertCSVToRecords_CPE extends LightningElement {
     _builderContext = {};
     _values = [];
     _typeMappings = [];
+    _elementType;
+    _elementName;
+
+    // For sObject Type on the Lookup
+    handleDynamicTypeMapping(event) { 
+        console.log('handling a dynamic type mapping');
+        console.log('event is ' + JSON.stringify(event));
+        let typeValue = event.detail.objectType;
+        const typeName = this._elementType === "Screen" ? 'T' : 'T__record'; 
+        console.log('typeValue is: ' + typeValue);
+        const dynamicTypeMapping = new CustomEvent('configuration_editor_generic_type_mapping_changed', {
+            composed: true,
+            cancelable: false,
+            bubbles: true,
+            detail: {
+                typeName, 
+                typeValue, 
+            }
+        });
+        this.dispatchEvent(dynamicTypeMapping);
+        this.dispatchFlowValueChangeEvent('objectName', event.detail.objectType, DATA_TYPE.STRING);
+    }    
+
+    @api
+    get elementInfo() {
+        return this._elementInfo;
+    }
+
+    set elementInfo(info) {
+        this._elementInfo = info || {};
+        if (this._elementInfo) {
+            this._elementName = this._elementInfo.apiName;
+            this._elementType = this._elementInfo.type;
+        }
+    }
 
     @track inputValues = {
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Input Object?', required: true, errorMessage: 'Please select an object'},
@@ -33,6 +68,8 @@ export default class LwcConvertCSVToRecords_CPE extends LightningElement {
         fastMode: {value: false, valueDataType: null, isCollection: false, label: 'Fast Mode', required: false, fieldHelpText: 'Fast mode speeds up parsing significantly for large inputs. However, it only works when the input has no quoted fields. Fast mode will automatically be enabled if no " characters appear in the input.'},
         transform: {value: '', valueDataType: null, isCollection: false, label: 'Transform', required: false, fieldHelpText: 'A function to apply on each value. The function receives the value as its first argument and the column number or header name when enabled as its second argument. The return value of the function will replace the value it received. The transform function is applied before dynamicTyping.'},
         delimitersToGuess: {value: '', valueDataType: null, isCollection: false, label: 'Delimiters To Guess', required: false, fieldHelpText: 'An array of delimiters to guess from if the delimiter option is not set'},
+        ignoreMissingColumns: {value: true, valueDataType: null, isCollection: false, label: 'Ignore Missing Columns', required: false, fieldHelpText: 'If true, columns that are empty/null will be ignored. Otherwise, an error will be thrown.'},
+        ignoreMissingFields: {value: true, valueDataType: null, isCollection: false, label: 'Ignore Missing Fields', required: false, fieldHelpText: 'If true, fields that do not have matching columns will be ignored. Otherwise, an error will be thrown.'},
     }
 
     @api get builderContext() {
@@ -42,6 +79,15 @@ export default class LwcConvertCSVToRecords_CPE extends LightningElement {
     set builderContext(value) {
         this._builderContext = value;
     }
+
+    @api get automaticOutputVariables() {
+        return this._automaticOutputVariables;
+    };
+    
+    set automaticOutputVariables(value) {
+        this._automaticOutputVariables = value;
+    }
+    @track _automaticOutputVariables;
 
     @api get inputVariables() {
         return this._values;
@@ -117,10 +163,6 @@ export default class LwcConvertCSVToRecords_CPE extends LightningElement {
         } else {
             console.log('in handleValueChange: no event detail');
         }
-    }
-
-    handleObjectChange(event) {
-        this.dispatchFlowValueChangeEvent('objectName', event.detail.objectType, DATA_TYPE.STRING);
     }
 
     dispatchFlowValueChangeEvent(id, newValue, dataType = DATA_TYPE.STRING) {
