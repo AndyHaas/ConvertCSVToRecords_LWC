@@ -24,6 +24,7 @@
   "packageAliases": {
     "ConvertCSVToRecordsLWC": "0Ho5e0000010wNNCAY",
     "FlowActionsBasePack@3.6.0-0": "04t8b000000mKnoAAE",
-    "FlowScreenComponentsBasePack@3.0.6-0": "04t5G000003rUvVQAU"
+    "FlowScreenComponentsBasePack@3.0.6-0": "04t5G000003rUvVQAU",
+    "ConvertCSVToRecordsLWC@0.2.8-3": "04t5e000000NrOqAAK"
   }
 }
